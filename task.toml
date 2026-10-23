@@ -1,0 +1,27 @@
+schema_version = "1.3"
+
+[task]
+name = "local/modular-lattice-basis-recovery"
+description = "从六条有序模线性残差恢复 primitive 二维整数格基并输出唯一规范基"
+authors = [{ name = "batch-b" }]
+keywords = ["mathematics", "modular-congruence", "lattice-reduction", "pytest"]
+
+[agent]
+timeout_sec = 3600
+
+[environment]
+build_timeout_sec = 600
+cpus = 1
+memory_mb = 2048
+storage_mb = 10240
+gpus = 0
+allow_internet = true
+
+[verifier]
+timeout_sec = 180
+
+[metadata]
+difficulty = "expert"
+category = "mathematics"
+tags = ["lattice-reduction", "modular-equations", "crt", "canonical-basis"]
+expert_time_estimate = "20m"

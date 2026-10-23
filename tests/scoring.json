@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "weight_policy": {
+    "version": 1,
+    "basis": "business_priority",
+    "core_min_share": 0.5
+  },
+  "gate_tests": [
+    "test_outputs.py::test_business_result_gate"
+  ],
+  "tests": {
+    "test_outputs.py::test_recovers_canonical_basis_from_six_congruences": {
+      "weight": 0.14,
+      "priority": "core",
+      "rationale": "从六条模线性观测恢复真实二维格基是本题唯一核心业务交付"
+    },
+    "test_outputs.py::test_rejects_nonminimal_positive_lift": {
+      "weight": 0.14,
+      "priority": "core",
+      "rationale": "最短向量选择必须排除同余别名中的非最小提升，否则会输出错误约化结果"
+    },
+    "test_outputs.py::test_near_degenerate_equal_norms_use_lex_order": {
+      "weight": 0.14,
+      "priority": "core",
+      "rationale": "近简并等范数时字典序决胜保证规范基在边界上仍唯一"
+    },
+    "test_outputs.py::test_reports_positive_primitive_determinant": {
+      "weight": 0.14,
+      "priority": "core",
+      "rationale": "行列式为正且 primitive 是格基可逆和唯一表示的基本条件"
+    },
+    "test_outputs.py::test_reports_two_moduli_and_equation_count": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_result_schema_is_exact": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_result_is_compact_sorted_json_with_one_newline": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_success_path_keeps_console_streams_empty": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_case_identifier_is_preserved": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_one_modulus": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_three_moduli": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_five_observations": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_seven_observations": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_coefficient_outside_bound": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_zero_coefficient_pair": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_composite_modulus": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_duplicate_modulus": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_residual_length_mismatch": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_inconsistent_residual_system": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_residual_outside_range": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_wrong_schema_version": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_extra_modulus_field": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_top_level_extra_key": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_rejects_missing_limits_key": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_invalid_input_preserves_previous_output": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    },
+    "test_outputs.py::test_replace_failure_preserves_directory": {
+      "weight": 0.02,
+      "priority": "schema",
+      "rationale": "该行为直接约束输入验收、输出规范或失败恢复，缺失时审计结果不能安全交付"
+    }
+  }
+}
