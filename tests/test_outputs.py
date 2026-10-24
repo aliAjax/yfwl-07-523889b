@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import atexit
 import copy
 import json
 import math
 import os
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 
@@ -19,6 +22,23 @@ COEFFICIENTS = [
     (2, 1),
 ]
 MODULI = [2, 3]
+_WORKSPACES: list[Path] = []
+
+
+def _opaque_workspace() -> Path:
+    path = Path(tempfile.mkdtemp(prefix="mx-", dir="/tmp"))
+    _WORKSPACES.append(path)
+    return path
+
+
+def _cleanup_workspaces() -> None:
+    for path in _WORKSPACES:
+        shutil.rmtree(path, ignore_errors=True)
+
+
+atexit.register(_cleanup_workspaces)
+
+
 TEST_CASE_IDS = {
     "test_recovers_canonical_basis_from_six_congruences": (
         "MODULAR-01",
@@ -106,8 +126,9 @@ def _invoke(
     entry: str = ENTRY,
     existing_output: bytes | None = None,
 ) -> tuple[subprocess.CompletedProcess[str], Path]:
-    input_path = tmp_path / "case.json"
-    output_path = tmp_path / "basis.json"
+    workspace = _opaque_workspace()
+    input_path = workspace / "case.json"
+    output_path = workspace / "basis.json"
     input_path.write_text(json.dumps(payload), encoding="utf-8")
     if existing_output is not None:
         output_path.write_bytes(existing_output)
@@ -117,13 +138,15 @@ def _invoke(
         text=True,
         timeout=10,
         env=os.environ.copy(),
+        cwd=workspace,
     )
     return completed, output_path
 
 
 def _raw_invoke(tmp_path: Path, raw: bytes) -> tuple[subprocess.CompletedProcess[str], Path]:
-    input_path = tmp_path / "raw.json"
-    output_path = tmp_path / "raw-basis.json"
+    workspace = _opaque_workspace()
+    input_path = workspace / "raw.json"
+    output_path = workspace / "raw-basis.json"
     input_path.write_bytes(raw)
     completed = subprocess.run(
         ["python3", ENTRY, "--input", str(input_path), "--output", str(output_path)],
@@ -131,6 +154,7 @@ def _raw_invoke(tmp_path: Path, raw: bytes) -> tuple[subprocess.CompletedProcess
         text=True,
         timeout=10,
         env=os.environ.copy(),
+        cwd=workspace,
     )
     return completed, output_path
 
@@ -410,8 +434,9 @@ def test_invalid_input_preserves_previous_output(tmp_path: Path):
 def test_replace_failure_preserves_directory(tmp_path: Path):
     """题面：「结果经同目录临时文件安装；若最终换名失败，既有文件按旧内容保留。」"""
     # case_id: RECOVERY-24
-    input_path = tmp_path / "case.json"
-    output_path = tmp_path / "basis.json"
+    workspace = _opaque_workspace()
+    input_path = workspace / "case.json"
+    output_path = workspace / "basis.json"
     input_path.write_text(json.dumps(_payload()), encoding="utf-8")
     output_path.mkdir()
     completed = subprocess.run(
@@ -420,6 +445,7 @@ def test_replace_failure_preserves_directory(tmp_path: Path):
         text=True,
         timeout=10,
         env=os.environ.copy(),
+        cwd=workspace,
     )
     assert completed.returncode == 3
     assert output_path.is_dir()
@@ -432,3 +458,13 @@ def test_business_result_gate(tmp_path: Path):
     assert completed.returncode == 0
     assert result["basis"] == [list(BASIS[0]), list(BASIS[1])]
     assert result["check"]["satisfied_equations"] == 24
+
+
+def test_candidate_paths_do_not_leak_pytest_identity(tmp_path: Path):
+    """候选可见路径不得包含测试名、pytest 临时目录或节点标识。"""
+    completed, output_path = _invoke(tmp_path, _payload())
+    assert completed.returncode == 0
+    visible = output_path.as_posix()
+    assert "test_" not in visible
+    assert "pytest" not in visible
+    assert json.loads(output_path.read_text())["case_id"] == "congruence-0712"

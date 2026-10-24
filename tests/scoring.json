@@ -6,7 +6,8 @@
     "core_min_share": 0.5
   },
   "gate_tests": [
-    "test_outputs.py::test_business_result_gate"
+    "test_outputs.py::test_business_result_gate",
+    "test_outputs.py::test_candidate_paths_do_not_leak_pytest_identity"
   ],
   "tests": {
     "test_outputs.py::test_recovers_canonical_basis_from_six_congruences": {
